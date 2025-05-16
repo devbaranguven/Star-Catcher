@@ -26,3 +26,36 @@ sound_path = os.path.join("sesler")
 #Arka plan
 bg_img = pygame.image.load(os.path.join(image_path, "arka_plan.png"))
 bg_img = pygame.transform.scale(bg_img, (screen_width, screen_height))
+
+# Oyun objeleri için resimler yükleniyor ve ayarlanıyor
+ufo_img = pygame.transform.scale(pygame.image.load(os.path.join(image_path, "ufo.png")), (65, 65))
+yildiz_img = pygame.transform.scale(pygame.image.load(os.path.join(image_path, "yildiz.png")), (30, 40))
+uzay_gemisi_img = pygame.transform.scale(pygame.image.load(os.path.join(image_path, "uzay_gemisi.png")), (65, 65))
+meteor_img = pygame.transform.scale(pygame.image.load(os.path.join(image_path, "meteor.png")), (30, 30))
+secret_img = pygame.transform.scale(pygame.image.load(os.path.join(image_path, "kalp.png")), (200, 200))
+
+# Arka plan müziği ayarlanıyor
+pygame.mixer.music.load(os.path.join(sound_path, "music.mp3"))
+pygame.mixer.music.set_volume(0.2)
+pygame.mixer.music.play(-1)
+
+#Çarpma sesi
+explosion_sound = pygame.mixer.Sound(os.path.join(sound_path, "explosion.mp3"))
+explosion_sound.set_volume(0.5)
+
+#Yazı tipi
+font = pygame.font.Font(None, 36)
+
+# Sis animasyonu (meteor çarpınca çıkan efekt)
+sis_images = []
+for i in range(1, 25):
+    img = pygame.image.load(f"sis/sis{i}.png")
+    img = pygame.transform.scale(img, (80, 80))
+    sis_images.append(img)
+
+# Alev animasyonu (uzay gemisi altı)
+    flame_images = []
+for i in range(9):  # explosion00 - explosion08
+    img = pygame.image.load(f"explosion/explosion0{i}.png")
+    img = pygame.transform.scale(img, (30, 30))
+    flame_images.append(img)

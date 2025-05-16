@@ -83,4 +83,69 @@ def game_over_screen(score):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if restart_button.collidepoint(event.pos):
                     return
-                
+    
+#Ana oyun döngüsü
+def run_game():
+    flame_frame = 0
+    ufo_x = 400
+    ufo_y = 100
+    ufo_speed_x = 4
+    ufo_speed_y = 2
+
+    uzay_gemisi_x = 400
+    uzay_gemisi_y = screen_height - 100
+    uzay_gemisi_speed = 7
+
+    yildizlar = []
+    meteorlar = []
+    animations = []
+
+    score = 0
+    missed_yildiz = 0
+    health = 4
+    yildiz_speed = 3
+    yildiz_speed_increase_time = time.time()
+    paused_at_143 = False
+
+    running = True    
+    while running:
+        screen.blit(bg_img, (0, 0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == pygame.FINGERDOWN or event.type == pygame.FINGERMOTION:
+                uzay_gemisi_x = int(event.x * screen_width) - 32
+
+        if missed_yildiz >= 3 or health <= 0:
+            game_over_screen(score)
+            return
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] and uzay_gemisi_x > 0:
+            uzay_gemisi_x -= uzay_gemisi_speed
+        if keys[pygame.K_RIGHT] and uzay_gemisi_x + 65 < screen_width:
+            uzay_gemisi_x += uzay_gemisi_speed
+
+        if time.time() - yildiz_speed_increase_time > 20:
+            yildiz_speed += 1
+            yildiz_speed_increase_time = time.time()      
+        
+        
+        #Ufo hareketi
+        ufo_x += ufo_speed_x
+        ufo_y += ufo_speed_y
+        if ufo_x + 65 >= screen_width or ufo_x <= 0:
+            ufo_speed_x *= -1
+        if ufo_y >= 150 or ufo_y <= 50:
+            ufo_speed_y *= -1
+
+        # Yıldız veya meteor düşür
+        if random.randint(1, 100) > 98:
+            drop_x = ufo_x + 32
+            drop_y = ufo_y + 65
+            if random.randint(1, 100) <= 75:
+                yildizlar.append([drop_x, drop_y])
+            else:
+                meteorlar.append([drop_x, drop_y])

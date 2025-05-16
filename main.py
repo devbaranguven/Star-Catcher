@@ -59,3 +59,28 @@ for i in range(9):  # explosion00 - explosion08
     img = pygame.image.load(f"explosion/explosion0{i}.png")
     img = pygame.transform.scale(img, (30, 30))
     flame_images.append(img)
+
+#Game Over ekranı
+def game_over_screen(score):
+    screen.blit(bg_img, (0, 0))
+    game_over_text = font.render("GAME OVER", True, RED)
+    final_score_text = font.render(f"Final Score: {score}", True, BLACK)
+    restart_text = font.render("Restart", True, WHITE)
+
+    restart_button = pygame.Rect(screen_width // 2 - 50, screen_height // 2 - 120, 120, 50)
+
+    screen.blit(game_over_text, (screen_width // 2 - 80, screen_height // 2 - 60))
+    screen.blit(final_score_text, (screen_width // 2 - 80, screen_height // 2 - 20))
+    screen.blit(restart_text, (screen_width // 2 - 50, screen_height // 2 - 120))
+    pygame.display.flip()
+
+  # Butona tıklanmayı bekle
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if restart_button.collidepoint(event.pos):
+                    return
+                

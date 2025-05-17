@@ -62,6 +62,7 @@ for i in range(9):  # explosion00 - explosion08
 
 #Game Over ekranı
 def game_over_screen(score):
+    pygame.mixer.music.stop()
     screen.blit(bg_img, (0, 0))
     game_over_text = font.render("GAME OVER", True, RED)
     final_score_text = font.render(f"Final Score: {score}", True, BLACK)
@@ -86,6 +87,7 @@ def game_over_screen(score):
     
 #Ana oyun döngüsü
 def run_game():
+    pygame.mixer.music.play(-1)
     flame_frame = 0
     ufo_x = 400
     ufo_y = 100

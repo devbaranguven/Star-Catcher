@@ -184,3 +184,39 @@ def run_game():
             screen.blit(meteor_img, (meteor[0], meteor[1]))
         screen.blit(flame_images[flame_frame], (uzay_gemisi_x + 17, uzay_gemisi_y + 55))
         screen.blit(uzay_gemisi_img, (uzay_gemisi_x, uzay_gemisi_y))
+
+        
+        # Sis animasyonu (meteor çarpınca)
+        yeni_animations = []
+        for anim in animations:
+            if anim["frame"] < len(sis_images):
+                screen.blit(sis_images[anim["frame"]], (anim["x"], anim["y"]))
+                anim["frame"] += 1
+                yeni_animations.append(anim)
+        animations = yeni_animations
+
+        # Skorlar,kaçırılan ve sağlık bilgisi
+        score_text = font.render(f"Score: {score}", True, BLUE)
+        missed_text = font.render(f"Missed: {missed_yildiz}/3", True, RED)
+        health_text = font.render(f"Health: {health}", True, GREEN)
+        screen.blit(score_text, (20, 20))
+        screen.blit(missed_text, (screen_width - 150, 20))
+        screen.blit(health_text, (screen_width // 2 - 70, 20))
+
+        # Gizli sürpriz
+        if score == 143 and not paused_at_143:
+            screen.blit(secret_img, (screen_width // 2 - 100, screen_height // 2 - 100))
+            pygame.display.flip()
+            paused = True
+            while paused:
+                for event in pygame.event.get():
+                    if event.type in [pygame.QUIT, pygame.MOUSEBUTTONDOWN, pygame.FINGERDOWN]:
+                        paused = False
+            paused_at_143 = True
+
+        pygame.display.flip()
+        flame_frame = (flame_frame + 1) % len(flame_images)
+        pygame.time.delay(40)
+
+while True:
+    run_game()

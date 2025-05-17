@@ -149,3 +149,38 @@ def run_game():
                 yildizlar.append([drop_x, drop_y])
             else:
                 meteorlar.append([drop_x, drop_y])
+
+        
+         # Yıldızları güncelle
+        yeni_yildizlar = []
+        for yildiz in yildizlar:
+            yildiz[1] += yildiz_speed
+            if uzay_gemisi_y < yildiz[1] + 40 < uzay_gemisi_y + 65 and uzay_gemisi_x < yildiz[0] + 15 < uzay_gemisi_x + 65:
+                score += 1
+                missed_yildiz = 0
+            elif yildiz[1] >= screen_height:
+                missed_yildiz += 1
+            else:
+                yeni_yildizlar.append(yildiz)
+        yildizlar = yeni_yildizlar
+
+        # Meteorları güncelle
+        yeni_meteorlar = []
+        for meteor in meteorlar:
+            meteor[1] += yildiz_speed
+            if uzay_gemisi_y < meteor[1] + 30 < uzay_gemisi_y + 65 and uzay_gemisi_x < meteor[0] + 15 < uzay_gemisi_x + 65:
+                health -= 1
+                explosion_sound.play()
+                animations.append({"x": meteor[0], "y": meteor[1], "frame": 0})
+            elif meteor[1] < screen_height:
+                yeni_meteorlar.append(meteor)
+        meteorlar = yeni_meteorlar
+
+         # Obje çizimi
+        screen.blit(ufo_img, (ufo_x, ufo_y))
+        for yildiz in yildizlar:
+            screen.blit(yildiz_img, (yildiz[0], yildiz[1]))
+        for meteor in meteorlar:
+            screen.blit(meteor_img, (meteor[0], meteor[1]))
+        screen.blit(flame_images[flame_frame], (uzay_gemisi_x + 17, uzay_gemisi_y + 55))
+        screen.blit(uzay_gemisi_img, (uzay_gemisi_x, uzay_gemisi_y))
